@@ -1,0 +1,1067 @@
+openapi: 3.0.3
+x-stoplight:
+  id: zwifx2x73c33d
+info:
+  title: Communicator API
+  version: 1.2.0
+  description: ' It provides a service that enables communications to be sent by different means to end customers, and in different formats.'
+  contact:
+    name: Alberto Mañas
+    email: amanas@riu.com
+servers:
+  - url: 'https://communicator-service-dev.apps.opdespmi.riu.net/{basePath}'
+    description: Development
+    variables:
+      basePath:
+        default: communicator/v1
+tags:
+  - name: application
+    description: Operations representing the sector responsible for sending notifications.
+  - name: notification
+    description: Operations representing the sending of different types of notifications.
+  - name: template
+    description: Operations that represent the generic content to be applied to the whole body of a notification.
+  - name: attempt
+    description: 'Operation representing the result of sending a notification, whether successful or not.'
+  - name: settings
+    description: Operations representing the settings that are associated with the sending of notifications encapsulating all sensitive information.
+paths:
+  /notifications:
+    get:
+      summary: Get a notifications
+      operationId: get-notifications
+      description: This operation retrieves all the notification.
+      parameters:
+        - $ref: '#/components/parameters/AcceptVersionParam'
+        - $ref: '#/components/parameters/AcceptParam'
+        - $ref: '#/components/parameters/AcceptLanguageParam'
+        - $ref: '#/components/parameters/PagingLimitParam'
+        - $ref: '#/components/parameters/PagingOffsetParam'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Accept-Version:
+              schema:
+                type: string
+              description: Header parameter that indicates the API version the client is working with
+            Trace-Id:
+              schema:
+                type: string
+              description: Response header parameter that indicates the ID to trace the path followed by the different involved services
+            Content-Language:
+              schema:
+                type: string
+              description: Used to describe the language(s) intended for the audience
+            Paging-Total-Record-Count:
+              $ref: '#/components/headers/Paging-Total-Record-Count'
+            Paging-Page-Size:
+              $ref: '#/components/headers/Paging-Page-Size'
+            Paging-Page-Number:
+              $ref: '#/components/headers/Paging-Page-Number'
+            Paging-Total-Page-Count:
+              $ref: '#/components/headers/Paging-Total-Page-Count'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+        '400':
+          $ref: '#/components/responses/400BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/401UnathorizedResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/500InternalErrorResponse'
+      tags:
+        - notification
+    parameters: []
+    post:
+      summary: Create a Notification
+      operationId: create-notification
+      parameters:
+        - $ref: '#/components/parameters/AcceptVersionParam'
+        - $ref: '#/components/parameters/AcceptParam'
+        - $ref: '#/components/parameters/AcceptLanguageParam'
+      description: This operation saves a notification.
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          headers:
+            Accept-Version:
+              schema:
+                type: string
+              description: Header parameter that indicates the API version the client is working with
+            Trace-Id:
+              schema:
+                type: string
+              description: Response header parameter that indicates the ID to trace the path followed by the different involved services
+            Content-Language:
+              schema:
+                type: string
+              description: Used to describe the language(s) intended for the audience
+        '400':
+          $ref: '#/components/responses/400BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/401UnathorizedResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/500InternalErrorResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationBase'
+      tags:
+        - notification
+  '/notifications/{id}':
+    parameters:
+      - schema:
+          type: number
+        name: id
+        in: path
+        required: true
+        description: notification id
+    get:
+      summary: Get a Notification by Id
+      responses:
+        '200':
+          description: OK
+          headers:
+            Accept-Version:
+              schema:
+                type: string
+              description: Header parameter that indicates the API version the client is working with
+            Trace-Id:
+              schema:
+                type: string
+              description: Response header parameter that indicates the ID to trace the path followed by the different involved services
+            Content-Language:
+              schema:
+                type: string
+              description: Used to describe the language(s) intended for the audience
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+        '400':
+          $ref: '#/components/responses/400BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/401UnathorizedResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/500InternalErrorResponse'
+      operationId: get-notification-by-id
+      description: This operation retrieves a notification.
+      parameters:
+        - $ref: '#/components/parameters/AcceptVersionParam'
+        - $ref: '#/components/parameters/AcceptParam'
+        - $ref: '#/components/parameters/AcceptLanguageParam'
+      tags:
+        - notification
+    put:
+      summary: Update a Notification by Id
+      operationId: update-notification-by-id
+      responses:
+        '200':
+          description: OK
+          headers:
+            Accept-Version:
+              schema:
+                type: string
+              description: Header parameter that indicates the API version the client is working with
+            Trace-Id:
+              schema:
+                type: string
+              description: Response header parameter that indicates the ID to trace the path followed by the different involved services
+            Content-Language:
+              schema:
+                type: string
+              description: Used to describe the language(s) intended for the audience
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+        '401':
+          $ref: '#/components/responses/401UnathorizedResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/500InternalErrorResponse'
+      description: This operation update a notification.
+      parameters:
+        - $ref: '#/components/parameters/AcceptVersionParam'
+        - $ref: '#/components/parameters/AcceptParam'
+        - $ref: '#/components/parameters/AcceptLanguageParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationBase'
+      tags:
+        - notification
+    delete:
+      summary: Delete a Notification by Id
+      operationId: delete-notification-by-id
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/401UnathorizedResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/500InternalErrorResponse'
+      description: This operation elinate a notification.
+      parameters:
+        - $ref: '#/components/parameters/AcceptVersionParam'
+        - $ref: '#/components/parameters/AcceptParam'
+        - $ref: '#/components/parameters/AcceptLanguageParam'
+      tags:
+        - notification
+  /templates:
+    get:
+      summary: Get a Templates
+      responses:
+        '200':
+          description: OK
+          headers:
+            Accept-Version:
+              schema:
+                type: string
+              description: Header parameter that indicates the API version the client is working with
+            Trace-Id:
+              schema:
+                type: string
+              description: Response header parameter that indicates the ID to trace the path followed by the different involved services
+            Content-Language:
+              schema:
+                type: string
+              description: Used to describe the language(s) intended for the audience
+            Paging-Total-Record-Count:
+              $ref: '#/components/headers/Paging-Total-Record-Count'
+            Paging-Total-Page-Count:
+              $ref: '#/components/headers/Paging-Total-Page-Count'
+            Paging-Page-Size:
+              $ref: '#/components/headers/Paging-Page-Size'
+            Paging-Page-Number:
+              $ref: '#/components/headers/Paging-Page-Number'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Template'
+        '400':
+          $ref: '#/components/responses/400BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/401UnathorizedResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/500InternalErrorResponse'
+      operationId: get-templates
+      description: This operation retrieves all the templates.
+      parameters:
+        - $ref: '#/components/parameters/AcceptVersionParam'
+        - $ref: '#/components/parameters/AcceptParam'
+        - $ref: '#/components/parameters/AcceptLanguageParam'
+        - $ref: '#/components/parameters/PagingLimitParam'
+        - $ref: '#/components/parameters/PagingOffsetParam'
+      tags:
+        - template
+    parameters: []
+    post:
+      summary: Create a Template
+      operationId: create-template
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+              examples: {}
+          headers:
+            Accept-Version:
+              schema:
+                type: string
+              description: Header parameter that indicates the API version the client is working with
+            Trace-Id:
+              schema:
+                type: string
+              description: Response header parameter that indicates the ID to trace the path followed by the different involved services
+            Content-Language:
+              schema:
+                type: string
+              description: Used to describe the language(s) intended for the audience
+        '400':
+          $ref: '#/components/responses/400BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/401UnathorizedResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/500InternalErrorResponse'
+      description: This operation saves a template.
+      parameters:
+        - $ref: '#/components/parameters/AcceptVersionParam'
+        - $ref: '#/components/parameters/AcceptParam'
+        - $ref: '#/components/parameters/AcceptLanguageParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateBase'
+        description: ''
+      tags:
+        - template
+  '/templates/{id}':
+    parameters:
+      - schema:
+          type: number
+        name: id
+        in: path
+        required: true
+        description: template id
+    get:
+      summary: Get a Template by Id
+      responses:
+        '200':
+          description: OK
+          headers:
+            Accept-Version:
+              schema:
+                type: string
+              description: Header parameter that indicates the API version the client is working with
+            Trace-Id:
+              schema:
+                type: string
+              description: Response header parameter that indicates the ID to trace the path followed by the different involved services
+            Content-Language:
+              schema:
+                type: string
+              description: Used to describe the language(s) intended for the audience
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+        '400':
+          $ref: '#/components/responses/400BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/401UnathorizedResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/500InternalErrorResponse'
+      operationId: get-template-by-Id
+      description: This operation retrieves a template.
+      parameters:
+        - $ref: '#/components/parameters/AcceptVersionParam'
+        - $ref: '#/components/parameters/AcceptParam'
+        - $ref: '#/components/parameters/AcceptLanguageParam'
+      tags:
+        - template
+    put:
+      summary: Update a Template by Id
+      operationId: update-template-by-id
+      responses:
+        '200':
+          description: OK
+          headers:
+            Accept-Version:
+              schema:
+                type: string
+              description: Header parameter that indicates the API version the client is working with
+            Trace-Id:
+              schema:
+                type: string
+              description: Response header parameter that indicates the ID to trace the path followed by the different involved services
+            Content-Language:
+              schema:
+                type: string
+              description: Used to describe the language(s) intended for the audience
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+        '401':
+          $ref: '#/components/responses/401UnathorizedResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/500InternalErrorResponse'
+      description: This operation update a template.
+      parameters:
+        - $ref: '#/components/parameters/AcceptVersionParam'
+        - $ref: '#/components/parameters/AcceptParam'
+        - $ref: '#/components/parameters/AcceptLanguageParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateBase'
+      tags:
+        - template
+    delete:
+      summary: Delete an Template by id
+      operationId: delete-template-by-id
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/401UnathorizedResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/500InternalErrorResponse'
+      parameters:
+        - $ref: '#/components/parameters/AcceptVersionParam'
+        - $ref: '#/components/parameters/AcceptParam'
+        - $ref: '#/components/parameters/AcceptLanguageParam'
+      description: 'This operation eliminate an template. '
+      tags:
+        - template
+  /applications:
+    get:
+      summary: Get applications
+      tags:
+        - application
+      responses:
+        '200':
+          description: OK
+          headers:
+            Accept-Version:
+              schema:
+                type: string
+              description: Header parameter that indicates the API version the client is working with
+            Trace-Id:
+              schema:
+                type: string
+              description: Response header parameter that indicates the ID to trace the path followed by the different involved services
+            Content-Language:
+              schema:
+                type: string
+              description: Used to describe the language(s) intended for the audience
+            Paging-Total-Record-Count:
+              $ref: '#/components/headers/Paging-Total-Record-Count'
+            Paging-Total-Page-Count:
+              $ref: '#/components/headers/Paging-Total-Page-Count'
+            Paging-Page-Number:
+              $ref: '#/components/headers/Paging-Page-Number'
+            Paging-Page-Size:
+              $ref: '#/components/headers/Paging-Page-Size'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Application'
+        '400':
+          $ref: '#/components/responses/400BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/401UnathorizedResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/500InternalErrorResponse'
+      operationId: get-applications
+      description: This operation retrieves the applications that can make use of the API.
+      parameters:
+        - $ref: '#/components/parameters/AcceptVersionParam'
+        - $ref: '#/components/parameters/AcceptParam'
+        - $ref: '#/components/parameters/AcceptLanguageParam'
+        - $ref: '#/components/parameters/PagingLimitParam'
+        - $ref: '#/components/parameters/PagingOffsetParam'
+    parameters: []
+    post:
+      summary: Create an Application
+      operationId: create-application
+      responses:
+        '201':
+          description: Created
+          headers:
+            Accept-Version:
+              schema:
+                type: string
+              description: Header parameter that indicates the API version the client is working with
+            Trace-Id:
+              schema:
+                type: string
+              description: Response header parameter that indicates the ID to trace the path followed by the different involved services
+            Content-Language:
+              schema:
+                type: string
+              description: Used to describe the language(s) intended for the audience
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '400':
+          $ref: '#/components/responses/400BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/401UnathorizedResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/500InternalErrorResponse'
+      description: This operation saves an application.
+      parameters:
+        - $ref: '#/components/parameters/AcceptVersionParam'
+        - $ref: '#/components/parameters/AcceptParam'
+        - $ref: '#/components/parameters/AcceptLanguageParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationBase'
+      tags:
+        - application
+  '/applications/{id}':
+    parameters:
+      - schema:
+          type: number
+        name: id
+        in: path
+        required: true
+        description: application id
+    get:
+      summary: Get an Application by id
+      tags:
+        - application
+      responses:
+        '200':
+          description: OK
+          headers:
+            Accept-Version:
+              schema:
+                type: string
+              description: Header parameter that indicates the API version the client is working with
+            Trace-Id:
+              schema:
+                type: string
+              description: Response header parameter that indicates the ID to trace the path followed by the different involved services
+            Content-Language:
+              schema:
+                type: string
+              description: Used to describe the language(s) intended for the audience
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '400':
+          $ref: '#/components/responses/400BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/401UnathorizedResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/500InternalErrorResponse'
+      operationId: get-application-by-id
+      description: This operation retrieves the application that can make use of the API.
+      parameters:
+        - $ref: '#/components/parameters/AcceptVersionParam'
+        - $ref: '#/components/parameters/AcceptParam'
+        - $ref: '#/components/parameters/AcceptLanguageParam'
+    put:
+      summary: Update an Application by Id
+      operationId: update-application-by-id
+      responses:
+        '200':
+          description: OK
+          headers:
+            Accept-Version:
+              schema:
+                type: string
+              description: Header parameter that indicates the API version the client is working with
+            Trace-Id:
+              schema:
+                type: string
+              description: Response header parameter that indicates the ID to trace the path followed by the different involved services
+            Content-Language:
+              schema:
+                type: string
+              description: Used to describe the language(s) intended for the audience
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '401':
+          $ref: '#/components/responses/401UnathorizedResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/500InternalErrorResponse'
+      parameters:
+        - $ref: '#/components/parameters/AcceptVersionParam'
+        - $ref: '#/components/parameters/AcceptParam'
+        - $ref: '#/components/parameters/AcceptLanguageParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationBase'
+      description: This operation update an application.
+      tags:
+        - application
+    delete:
+      summary: Delete an Application by Id
+      operationId: delete-application-by-id
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/401UnathorizedResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/500InternalErrorResponse'
+      description: This operation eliminate an application
+      parameters:
+        - $ref: '#/components/parameters/AcceptVersionParam'
+        - $ref: '#/components/parameters/AcceptParam'
+        - $ref: '#/components/parameters/AcceptLanguageParam'
+      tags:
+        - application
+  '/notifications/{notification_id}/attempts':
+    parameters:
+      - schema:
+          type: integer
+          format: int64
+        name: notification_id
+        in: path
+        description: The notification identifier
+        required: true
+    get:
+      summary: Get attempts
+      tags:
+        - attempt
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Attempt'
+          headers:
+            Paging-Total-Record-Count:
+              $ref: '#/components/headers/Paging-Total-Record-Count'
+            Paging-Page-Size:
+              $ref: '#/components/headers/Paging-Page-Size'
+            Paging-Page-Number:
+              $ref: '#/components/headers/Paging-Page-Number'
+            Paging-Total-Page-Count:
+              $ref: '#/components/headers/Paging-Total-Page-Count'
+            Accept-Version:
+              schema:
+                type: string
+              description: Header parameter that indicates the API version the client is working with
+            Trace-Id:
+              schema:
+                type: string
+              description: Response header parameter that indicates the ID to trace the path followed by the different involved services
+            Content-Language:
+              schema:
+                type: string
+              description: Used to describe the language(s) intended for the audience
+        '400':
+          $ref: '#/components/responses/400BadRequestResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          $ref: '#/components/responses/403ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/500InternalErrorResponse'
+      operationId: get-modes-attempts
+      description: Retrieve the attempt list of a specific mode by the mode ID sorted by the creation_date in descending order
+      parameters:
+        - $ref: '#/components/parameters/AcceptVersionParam'
+        - $ref: '#/components/parameters/AcceptParam'
+        - $ref: '#/components/parameters/AcceptLanguageParam'
+        - $ref: '#/components/parameters/PagingOffsetParam'
+        - $ref: '#/components/parameters/PagingLimitParam'
+components:
+  schemas:
+    Error:
+      title: Error
+      x-stoplight:
+        id: fr7sp4nb897rt
+      type: object
+      description: Contains details of the error caused in the operations.
+      properties:
+        field:
+          type: string
+          description: Message identifier.
+        error_message:
+          type: string
+          description: Error message.
+      required:
+        - field
+        - error_message
+    Attempt:
+      title: Attempt
+      x-stoplight:
+        id: 7rzqrr0ujg3lx
+      type: object
+      description: The attempt of a notification sent
+      x-examples: {}
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The identifier of the attempt
+        mode_id:
+          type: integer
+          format: int64
+          description: The mode identifier associated with the attempt
+        state:
+          type: string
+          enum:
+            - PENDING
+            - ERROR
+            - SENT
+            - CANCELLED
+          description: The state of the attempt
+        attempt_number:
+          type: integer
+          description: The attempt number
+        creation_date:
+          type: string
+          format: date-time
+          description: Date of creation of the attempt
+          pattern: '^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$'
+        modification_date:
+          type: string
+          format: date-time
+          description: Date of last modification of the attempt
+          pattern: '^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$'
+        error:
+          type: string
+          description: The error message
+    NotificationBase:
+      title: NotificationBase
+      x-stoplight:
+        id: a7l2rlwoqs7en
+      type: object
+      description: 'Complete settings to manage notifications within the app. This model includes settings for various notification channels and preferences, using the NotificationSettings model for detailed settings. It also manages recipient data for different types of notifications, such as email, WhatsApp and SMS, ensuring that notifications are sent appropriately.'
+      properties:
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'Map of labels that will be used to complement the information in the template. The key of the label, which serves as an identifier or name for the label and The value associated with the key of the label.'
+          example:
+            key1: general_wedding_reference_number
+            key2: WEB60
+        immediate:
+          type: boolean
+          description: Send immediate message.
+          example: true
+        notification_setting_id:
+          type: integer
+          description: NotificationSettings identifier representing the settings chosen by the user to send a notification.
+          example: 1234
+        notification_data:
+          $ref: '#/components/schemas/NotificationData'
+      required:
+        - labels
+        - immediate
+        - notification_setting_id
+        - notification_data
+    Notification:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: integer
+              description: Response identifier.
+              example: 1234
+              readOnly: true
+            date:
+              type: string
+              format: date-time
+              description: date of registration
+              example: '2024-06-21T10:30:00+02:00'
+            status:
+              $ref: '#/components/schemas/ModeStatusEnum'
+          required:
+            - id
+            - date
+        - $ref: '#/components/schemas/NotificationBase'
+      title: Notification
+      description: 'This response object provides comprehensive settings for managing notifications within the application. It includes configurations for various notification channels and preferences, using the NotificationSettings model for detailed settings. It also handles recipient data for different types of notifications, such as email, WhatsApp, and SMS, ensuring that notifications are sent appropriately.'
+    TemplateBase:
+      title: TemplateBase
+      x-stoplight:
+        id: bgy2yr93j0l1y
+      type: object
+      description: Base template to be used with its configuration.
+      properties:
+        name:
+          type: string
+          description: message type name
+        url:
+          type: string
+          description: notification template url
+          format: uri
+        version:
+          type: string
+          description: message type version
+        active:
+          type: boolean
+          description: indicates whether the message type is active or inactive
+      required:
+        - name
+        - url
+        - version
+        - active
+    Template:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: integer
+              description: |
+                identifier id
+              readOnly: true
+            date:
+              type: string
+              format: date-time
+              pattern: '^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$'
+        - $ref: '#/components/schemas/TemplateBase'
+      title: Template
+      description: Template response after a POST or PUT.
+    ApplicationBase:
+      title: ApplicationBase
+      x-stoplight:
+        id: ikenzjzah91hs
+      type: object
+      properties:
+        name:
+          type: string
+          description: Application name that the api is going to use.
+        description:
+          type: string
+          description: application function brief description.
+      required:
+        - name
+        - description
+      description: Name of the base application about which you want to make a notification.
+    Application:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: integer
+              description: application identifier
+              readOnly: true
+              example: 1234
+            date:
+              type: string
+              format: date-time
+              description: registration date
+              pattern: '^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$'
+              example: '2024-06-21T10:30:00+02:00'
+          required:
+            - id
+            - date
+        - $ref: '#/components/schemas/ApplicationBase'
+      title: Application
+      description: Application response after a POST or PUT.
+    AttachmentBase:
+      title: AttachmentBase
+      x-stoplight:
+        id: 11qmb27tju6hv
+      description: Base file. This will serve as the basis for creating other models of the Attachment type
+      type: object
+      properties:
+        name:
+          type: string
+    NotificationData:
+      title: NotificationData
+      x-stoplight:
+        id: xzmykessij1ue
+      type: object
+      description: |-
+        Represents the data necessary for sending notifications through various channels. This model includes recipient information 
+        for different types of notifications (such as email, WhatsApp, and SMS) and the list of attachments to be sent with the notifications.
+      properties:
+        data:
+          type: string
+          description: |-
+            An array of JSON objects, each containing recipient data for different types of notifications. Each object may include:
+            - **Email**: Contains recipient email addresses and other relevant email-specific information.
+            - **WhatsApp**: Contains recipient phone numbers and other WhatsApp-specific details.
+            - **SMS**: Contains recipient phone numbers and SMS-specific information.
+            This attribute allows for the inclusion of various recipient details necessary for sending multiple notifications through different channels.
+          example: 'recipient:rariel@riu.com,cc:[],bcc:[]'
+        lang:
+          type: string
+          description: The language used to send the notification.
+          example: ES
+        attachments:
+          type: array
+          description: The list of attachments to send
+          items:
+            $ref: '#/components/schemas/AttachmentBase'
+      required:
+        - data
+        - lang
+    ModeStatusEnum:
+      title: ModeStatusEnum
+      x-stoplight:
+        id: uideq4l69th4v
+      type: string
+      enum:
+        - SENT
+        - PENDING
+        - ERROR
+        - CANCELLED
+      description: |-
+        Represents the status of a notification delivery within the application. Possible values are:
+            - **SENT:** The notification has been successfully sent.
+            - **PENDING:** The notification is pending and has not yet been sent.
+            - **ERROR:** There was an error in sending the notification.
+            - **CANCELLED:** The notification was cancelled and was not sent.
+  parameters:
+    AcceptVersionParam:
+      name: Accept-Version
+      in: header
+      required: false
+      schema:
+        type: string
+      description: Header parameter that indicates the API version the client is working with
+    AcceptParam:
+      name: Accept
+      in: header
+      required: false
+      schema:
+        type: string
+      description: 'Header parameter that advertises which content types, expressed as MIME types, the client is able to understand'
+    AcceptLanguageParam:
+      name: Accept-Language
+      in: header
+      required: true
+      schema:
+        type: string
+      description: 'This header advertises which languages (natural languages) the client is able to understand, and which locale variant is preferred'
+    PagingLimitParam:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        default: 10
+        minimum: 1
+      description: Maximum number of items per page
+      required: true
+    PagingOffsetParam:
+      name: offset
+      in: query
+      required: true
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+      description: The offset position of the pagination
+  responses:
+    400BadRequestResponse:
+      description: 400 - Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    404NotFoundResponse:
+      description: 404 - Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    401UnathorizedResponse:
+      description: 401 - Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    403ForbiddenResponse:
+      description: 403 - Forbiden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    500InternalErrorResponse:
+      description: 500 - Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  requestBodies: {}
+  headers:
+    Paging-Total-Record-Count:
+      schema:
+        type: integer
+        format: int32
+      description: The total number of item without pagination
+    Paging-Page-Size:
+      schema:
+        type: integer
+        format: int32
+      description: The total number of item in the current page
+    Paging-Page-Number:
+      schema:
+        type: integer
+        format: int32
+      description: The actual page number
+    Paging-Total-Page-Count:
+      schema:
+        type: integer
+        format: int32
+      description: The total number of pages
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []
