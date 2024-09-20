@@ -15,6 +15,7 @@ metadata:
       icon: code
 spec:
   type: rest
+  system: examples
   lifecycle: develop
   owner: ecommmerce
   definition:
