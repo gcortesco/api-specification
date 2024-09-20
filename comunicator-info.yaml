@@ -4,7 +4,7 @@ metadata:
   name: communicator-api
   description: The Comunicator API
   tags:
-    - store
+    - ecomm
     - rest
   links:
     - url: https://github.com/gcortesco/api-specification/
@@ -14,8 +14,8 @@ metadata:
       title: API Spec
       icon: code
 spec:
-  type: develop
-  lifecycle: experimental
+  type: rest
+  lifecycle: develop
   owner: ecommmerce
   definition:
     $text: ./communicator.yaml
