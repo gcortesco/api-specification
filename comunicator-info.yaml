@@ -1,0 +1,21 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: communicator
+  description: The Comunicator API
+  tags:
+    - store
+    - rest
+  links:
+    - url: https://github.com/gcortesco/api-specification/
+      title: GitHub Repo
+      icon: github
+    - url: https://github.com/gcortesco/api-specification/blob/main/communicator.yaml
+      title: API Spec
+      icon: code
+spec:
+  type: develop
+  lifecycle: experimental
+  owner: ecommmerce
+  definition:
+    $text: ./communicator.yaml
