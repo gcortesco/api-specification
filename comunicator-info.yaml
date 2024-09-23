@@ -14,9 +14,9 @@ metadata:
       title: API Spec
       icon: code
 spec:
-  type: rest
-  system: examples
-  lifecycle: develop
+  type: openapi
+  lifecycle: production
   owner: ecomm
+  system: riu-contact-operative
   definition:
     $text: ./communicator.yaml
