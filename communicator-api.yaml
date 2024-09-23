@@ -7,4 +7,9 @@ spec:
   type: openapi
   lifecycle: production
   owner: ecomm
-  system: iu-contact-operative
+  system: riu-contact-operative
+  definition: |
+    openapi: "3.0.0"
+    info:
+      version: 1.0.0
+      title: Communicator API
