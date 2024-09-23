@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: communicator-api
+  description: Communicator api
+spec:
+  type: openapi
+  lifecycle: production
+  owner: ecomm
+  system: iu-contact-operative
