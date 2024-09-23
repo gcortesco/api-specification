@@ -7,6 +7,6 @@ spec:
   type: service
   lifecycle: production
   owner: ecomm
-  system: riu-comunicator-solution
+  system: riu-contact-operative
   providesApis:
     - communicator-api
