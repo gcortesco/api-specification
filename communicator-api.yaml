@@ -8,8 +8,5 @@ spec:
   lifecycle: production
   owner: ecomm
   system: riu-contact-operative
-  definition: |
-    openapi: "3.0.0"
-    info:
-      version: 1.0.0
-      title: Communicator API
+  definition:
+    $text: ./communicator.yaml
