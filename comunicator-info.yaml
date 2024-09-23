@@ -17,6 +17,6 @@ spec:
   type: rest
   system: examples
   lifecycle: develop
-  owner: ecommmerce
+  owner: ecomm
   definition:
     $text: ./communicator.yaml
