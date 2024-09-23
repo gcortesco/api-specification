@@ -1,0 +1,8 @@
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: riu-contact-operative
+  description: Operative Riu.com for users contact with riu deparments
+spec:
+  owner: ecomm
+  domain: product-content
